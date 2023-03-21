@@ -47,7 +47,7 @@ const Card = (article) => {
   return card;
 };
 
-//export { Card };
+export { Card };
   
 
  
@@ -64,25 +64,38 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
-  fetch('http://localhost:5001/api/articles')
-  .then(response => response.json())
-  .then(data => {
-   
-    const articles = data.articles.flat();
-    
-    const container = document.querySelector(selector);
-   
-    articles.forEach(article => {
-      const card = Card(article);
-      card.addEventListener('click', () => {
-        console.log(article.headline);
+  const endpoint = "http://localhost:5001/api/articles";
+  
+  fetch(endpoint)
+    .then(response => response.json())
+    .then(data => {
+      const articles = Object.keys(data).map(key => data[key]);
+      const container = document.querySelector(selector);
+      articles.forEach(article => {
+        const card = createCard(article);
+        container.appendChild(card);
       });
-      container.appendChild(card);
+    })
+    .catch(error => {
+      console.error("Error fetching articles:", error);
     });
-  })
-  .catch(error => console.error(error));
+  };
+  const createCard = (article) => {
+    const card = document.createElement("div");
+    card.classList.add("card");
+    card.innerHTML = `
+      <div class="card__title">${article.title}</div>
+      <div class="card__author">${article.author}</div>
+      <div class="card__content">${article.content}</div>
+    `;
+    return card;
+  };
+ 
 
+     
 
-};
-
-export { Card, cardAppender }
+//export { card, cardAppender };
+    
+    
+  
+        
