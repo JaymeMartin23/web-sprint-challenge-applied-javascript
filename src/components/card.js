@@ -64,32 +64,47 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
-  const endpoint = "http://localhost:5001/api/articles";
-  
-  fetch(endpoint)
+  fetch('http://localhost:5001/api/articles')
     .then(response => response.json())
     .then(data => {
-      const articles = Object.keys(data).map(key => data[key]);
-      const container = document.querySelector(selector);
+      // The articles are not organized in a single array, so we need to flatten them first
+      const articles = Object.values(data).flat();
+
+      // Create a card for each article and append it to the DOM
       articles.forEach(article => {
-        const card = createCard(article);
-        container.appendChild(card);
+        const card = Card(article);
+        document.querySelector(selector).appendChild(card);
       });
     })
-    .catch(error => {
-      console.error("Error fetching articles:", error);
-    });
-  };
-  const createCard = (article) => {
-    const card = document.createElement("div");
-    card.classList.add("card");
-    card.innerHTML = `
-      <div class="card__title">${article.title}</div>
-      <div class="card__author">${article.author}</div>
-      <div class="card__content">${article.content}</div>
-    `;
-    return card;
-  };
+    .catch(error => console.error(error));
+};
+
+export { cardAppender };
+
+
+
+
+
+
+
+ 
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+ 
  
 
      
