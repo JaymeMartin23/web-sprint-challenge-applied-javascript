@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const Card = (article) => {
   // TASK 5
   // ---------------------
@@ -50,11 +52,6 @@ const Card = (article) => {
 export { Card };
   
 
- 
-
-  
-  
-
 
   // TASK 6
   // ---------------------
@@ -70,16 +67,40 @@ export { Card };
     .then(response => {
       const data = response.data;
 
+      const bootstrap = response.data.articles.bootstrap;
+      const javascript = response.data.articles.javascript;
+      const jquery = response.data.articles.jquery;
+      const node = response.data.articles.node;
+      const technology = response.data.articles.technology;
+
+      console.log(response.data.articles)
       const cardContainer = document.createElement('div');
       cardContainer.classList.add('cards-container');
 
-      for (let article of data.articles) {
+      for (let article of response.data.articles.bootstrap) {
+        const card = Card(article);
+        cardContainer.appendChild(card);
+      }
+      for (let article of response.data.articles.javascript) {
+        const card = Card(article);
+        cardContainer.appendChild(card);
+      }
+      for (let article of response.data.articles.jquery) {
+        const card = Card(article);
+        cardContainer.appendChild(card);
+      }
+      for (let article of response.data.articles.node) {
+        const card = Card(article);
+        cardContainer.appendChild(card);
+      }
+      for (let article of response.data.articles.technology) {
         const card = Card(article);
         cardContainer.appendChild(card);
       }
 
       const selectorElement = document.querySelector(selector);
       selectorElement.appendChild(cardContainer);
+
     })
     .catch(error => console.error(error));
 };
